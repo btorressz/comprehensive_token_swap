@@ -16,7 +16,7 @@ The Comprehensive Token Swap project is a robust and feature-rich decentralized 
 
   ## Disclaimer
 
-This project is an example and was made in the Solana Playground IDE and was exported to VSCode. 
+This project is an example and was made in the Solana Playground IDE and was exported to VSCode. (THIS PROJECT HAS ONLY RAN IN SOLANA PLAYGROUND IDE) 
 
 ### Inspiration
 
