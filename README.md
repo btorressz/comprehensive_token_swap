@@ -13,3 +13,11 @@ The Comprehensive Token Swap project is a robust and feature-rich decentralized 
 - **Fee Mechanism**: Charges a small fee on each swap or liquidity operation.
 - **Slippage Protection**: Protects against significant price changes during transactions.
 - **Enhanced Security**: Includes reentrancy guard and circuit breaker mechanisms.
+
+  ## Disclaimer
+
+This project is an example and was made in the Solana Playground IDE and was exported to VSCode. 
+
+### Inspiration
+
+I previously developed a similar project for Ethereum using the Remix IDE for a client. This experience inspired me to explore and implement similar functionalities on the Solana blockchain, leveraging the capabilities of the Anchor framework. (https://github.com/btorressz/ComprehensiveTokenSwap) this is the solidity example feel free to check it out!
