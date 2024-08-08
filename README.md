@@ -40,5 +40,6 @@ This is the test contract used to validate the functionalities of the Comprehens
 - Test Multi-Token Swaps
 - Test Flash Swaps
 
-
+### License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
