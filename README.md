@@ -22,4 +22,23 @@ This project is an example and was made in the Solana Playground IDE and was exp
 
 I previously developed a similar project for Ethereum using the Remix IDE for a client. This experience inspired me to explore and implement similar functionalities on the Solana blockchain, leveraging the capabilities of the Anchor framework. (https://github.com/btorressz/ComprehensiveTokenSwap) this is the solidity example feel free to check it out!
 
+## Contracts/Programs
+
+### ComprehensiveTokenSwap
+
+This is the main contract that implements all the functionalities described above. It includes:
+- Liquidity Pool Management
+- Swapping Mechanisms
+- Fee Management
+- Security Features
+
+### TestComprehensiveTokenSwap
+
+This is the test contract used to validate the functionalities of the ComprehensiveTokenSwap contract. It includes functions to:
+- Add Liquidity
+- Test Simple Swaps
+- Test Multi-Token Swaps
+- Test Flash Swaps
+
+
 
