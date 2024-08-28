@@ -1,48 +1,89 @@
-import * as anchor from "@coral-xyz/anchor";
-import BN from "bn.js";
-import assert from "assert";
+//Local Version
+import * as anchor from "@project-serum/anchor";
 import * as web3 from "@solana/web3.js";
-import type { ComprehensiveTokenSwap } from "../target/types/comprehensive_token_swap";
-//// TODO: Add to this later
+import BN from "bn.js"; // For handling large numbers
 
-/*
-I WANTED TO WRITE TEST IN RUST FOR PRACTICE FEEL FREE TO CHECK OUT test_comprehensive_token_swap.rs
+// Configure the client to use the local cluster (local validator or network)
+anchor.setProvider(anchor.AnchorProvider.env());
 
-describe("Test", () => {
-  // Configure the client to use the local cluster
-  anchor.setProvider(anchor.AnchorProvider.env());
+// Define the program interface based on your deployed program ID and IDL
+const program = anchor.workspace.ComprehensiveTokenSwap as anchor.Program<any>; // Replace 'any' with  program's IDL type
 
-  const program = anchor.workspace.ComprehensiveTokenSwap as anchor.Program<ComprehensiveTokenSwap>;
+describe("Comprehensive Token Swap Tests", () => {
   
-  it("initialize", async () => {
-    // Generate keypair for the new account
-    const newAccountKp = new web3.Keypair();
-
-    // Send transaction
-    const data = new BN(42);
+  // Test for initializing the token swap pool
+  it("Initialize the Token Swap Pool", async () => {
+    const poolAccountKp = new web3.Keypair();
+    const [poolAuthority, _] = await web3.PublicKey.findProgramAddress(
+      [Buffer.from("token_swap_pool")],
+      program.programId
+    );
+    
     const txHash = await program.methods
-      .initialize(data)
+      .initializePool(0) // bump seed
       .accounts({
-        newAccount: newAccountKp.publicKey,
-        signer: program.provider.publicKey,
+        pool: poolAccountKp.publicKey,
+        poolAuthority: poolAuthority,
+        admin: program.provider.publicKey,
         systemProgram: web3.SystemProgram.programId,
       })
-      .signers([newAccountKp])
+      .signers([poolAccountKp])
       .rpc();
-    console.log(`Use 'solana confirm -v ${txHash}' to see the logs`);
 
-    // Confirm transaction
+    console.log(`Token Swap Pool initialized. Tx: ${txHash}`);
     await program.provider.connection.confirmTransaction(txHash);
+  });
 
-    // Fetch the created account
-    const newAccount = await program.account.newAccount.fetch(
-      newAccountKp.publicKey
-    );
+  // Test for adding liquidity to the pool
+  it("Add Liquidity", async () => {
+    const poolAccountKey = new web3.PublicKey("<your-pool-account>"); // Replace with the actual pool account
 
-    console.log("On-chain data is:", newAccount.data.toString());
+    const txHash = await program.methods
+      .addLiquidity(new BN(1000), new BN(2000)) // Amounts for token A and token B
+      .accounts({
+        pool: poolAccountKey,
+        user: program.provider.publicKey,
+        systemProgram: web3.SystemProgram.programId,
+      })
+      .rpc();
 
-    // Check whether the data on-chain is equal to local 'data'
-    assert(data.eq(newAccount.data));
+    console.log(`Liquidity added. Tx: ${txHash}`);
+    await program.provider.connection.confirmTransaction(txHash);
+  });
+
+  // Test for swapping tokens
+  it("Swap Tokens", async () => {
+    const poolAccountKey = new web3.PublicKey("<your-pool-account>"); // Replace with the actual pool account
+
+    const txHash = await program.methods
+      .swapTokens(new BN(500), new BN(400)) // Swap token A for token B
+      .accounts({
+        pool: poolAccountKey,
+        user: program.provider.publicKey,
+        systemProgram: web3.SystemProgram.programId,
+      })
+      .rpc();
+
+    console.log(`Tokens swapped. Tx: ${txHash}`);
+    await program.provider.connection.confirmTransaction(txHash);
+  });
+
+  // Test for performing a flash swap
+  it("Flash Swap", async () => {
+    const poolAccountKey = new web3.PublicKey("<your-pool-account>"); // Replace with the actual pool account
+    const targetContract = new web3.Keypair(); // Contract to interact with during flash swap
+
+    const txHash = await program.methods
+      .flashSwap(new BN(1000), targetContract.publicKey)
+      .accounts({
+        pool: poolAccountKey,
+        user: program.provider.publicKey,
+        systemProgram: web3.SystemProgram.programId,
+      })
+      .signers([targetContract])
+      .rpc();
+
+    console.log(`Flash swap executed. Tx: ${txHash}`);
+    await program.provider.connection.confirmTransaction(txHash);
   });
 });
-*/
